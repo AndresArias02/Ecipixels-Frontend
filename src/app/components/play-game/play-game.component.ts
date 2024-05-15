@@ -42,7 +42,6 @@ export class PlayGameComponent implements OnInit {
   
   getPlayer() {
     this.player = this.gameService.getCurrentPlayer();
-    //console.log('jugador en sesión :', this.player);
     if (this.player) {
       this.playerId = this.player.playerId;
     }
