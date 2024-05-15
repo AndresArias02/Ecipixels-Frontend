@@ -1,9 +1,8 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError } from 'rxjs';
-import { Game } from '../classes/game';
+import { Observable} from 'rxjs';
 import { Player } from '../classes/player';
-import { Board } from '../classes/board';
+
 
 @Injectable({
   providedIn: 'root'

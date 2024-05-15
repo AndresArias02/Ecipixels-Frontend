@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { GameService } from '../../services/game.service';
 import { Router } from '@angular/router';
 import { WebSocketServiceService } from '../../services/web-socket-service.service';
 import { Player } from '../../classes/player';
-import { PlayGameComponent } from '../play-game/play-game.component';
+
 
 @Component({
   selector: 'app-start-game',

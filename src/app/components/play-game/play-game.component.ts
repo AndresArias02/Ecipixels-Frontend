@@ -3,7 +3,6 @@ import { GameService } from '../../services/game.service';
 import { Player } from '../../classes/player';
 import { WebSocketServiceService } from '../../services/web-socket-service.service';
 import { GameState } from '../../classes/game-state';
-import { PlayerService } from '../../services/player.service';
 
 @Component({
   selector: 'app-play-game',
@@ -21,7 +20,7 @@ export class PlayGameComponent implements OnInit {
   currentDirection: string = 'stop';
   moveTimeout: any;
 
-  constructor(private playerService:PlayerService,private gameService: GameService,private webSocketService:WebSocketServiceService) { }
+  constructor(private gameService: GameService,private webSocketService:WebSocketServiceService) { }
 
   ngOnInit(): void {
     const canvas = this.canvas.nativeElement;
