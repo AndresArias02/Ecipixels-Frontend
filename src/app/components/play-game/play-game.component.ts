@@ -74,8 +74,8 @@ export class PlayGameComponent implements OnInit {
     this.webSocketService.getGameStateObservableMovements().subscribe(
       (data: GameState) => {
         this.gameState = data
-        this.resizeCanvas();
         this.updatePlayer();
+        this.resizeCanvas();
         this.drawBoard();
       },
       (error) => {
@@ -104,7 +104,6 @@ export class PlayGameComponent implements OnInit {
         newDirection = 'right';
         break;
       case 'p':
-        console.log('paaaarrrooooo');
         this.stop();
         return;
       default:
@@ -126,19 +125,15 @@ export class PlayGameComponent implements OnInit {
       
       switch (newDirection) {
         case 'up':
-          console.log('arrribbbaaaaa');
           this.moveUp();
           break;
         case 'down':
-          console.log('abbbaaajooooo');
           this.moveDown();
           break;
         case 'left':
-          console.log('izquierdaaaaaaaa');
           this.moveLeft();
           break;
         case 'right':
-          console.log('dereccccchhhhhaaaa');
           this.moveRight();
           break;
       }
@@ -164,29 +159,41 @@ export class PlayGameComponent implements OnInit {
 
   movePlayer(deltaX: number, deltaY: number) {
     if (!this.player) return;
-
+  
+    let lastSentPosition = { row: this.player.head.row, col: this.player.head.col };
+  
     const moveHead = () => {
-      if (!this.player.isAlive || this.currentDirection === "stop") {
-        if (!this.player.isAlive) {
-          this.startNewGame();
-        }
+  
+      if (!this.player.isAlive) {
+        this.startNewGame();
         return;
       }
-
-      this.player.head.row += deltaY;
-      this.player.head.col += deltaX;
-
-      const row = this.player.head.row;
-      const col = this.player.head.col;
-
-      this.webSocketService.sendMessageToMovePlayer(this.player.playerId, row, col);
-
-      this.moveTimeout = setTimeout(moveHead, 500);
+  
+      if (this.currentDirection === "stop") {
+        return;
+      }
+  
+      const newRow = this.player.head.row + deltaY;
+      const newCol = this.player.head.col + deltaX;
+  
+      if (newRow === lastSentPosition.row && newCol === lastSentPosition.col) {
+        setTimeout(moveHead, 400);
+        return;
+      }
+  
+      this.player.head.row = newRow;
+      this.player.head.col = newCol;
+  
+      this.webSocketService.sendMessageToMovePlayer(this.player.playerId, newRow, newCol);
+  
+      lastSentPosition = { row: newRow, col: newCol };
+  
+      this.moveTimeout = setTimeout(moveHead, 400);
     };
-
+  
     moveHead();
   }
-
+  
   stop() {
     this.currentDirection = "stop";
     clearTimeout(this.moveTimeout);

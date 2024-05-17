@@ -57,8 +57,6 @@ export class WebSocketServiceService {
   }
 
   sendMessageToMovePlayer(playerId:number, row:number, col:number){
-    console.log("-------------- Data enviada para el movimiento -------------------")
-    console.log(playerId,row,col);
     this.stompClient.send(`/app/movePlayer/${playerId}/${row}/${col}`, {});
   }
 }
