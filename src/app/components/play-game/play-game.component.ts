@@ -3,6 +3,7 @@ import { GameService } from '../../services/game.service';
 import { Player } from '../../classes/player';
 import { WebSocketServiceService } from '../../services/web-socket-service.service';
 import { GameState } from '../../classes/game-state';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-play-game',
@@ -20,7 +21,7 @@ export class PlayGameComponent implements OnInit {
   currentDirection: string = 'stop';
   moveTimeout: any;
 
-  constructor(private gameService: GameService,private webSocketService:WebSocketServiceService) { }
+  constructor(private gameService: GameService,private webSocketService:WebSocketServiceService, private router:Router) { }
 
   ngOnInit(): void {
     const canvas = this.canvas.nativeElement;
@@ -160,12 +161,18 @@ export class PlayGameComponent implements OnInit {
     this.movePlayer(1, 0);
   }
 
+
   movePlayer(deltaX: number, deltaY: number) {
     if (!this.player) return;
 
     const moveHead = () => {
-      if (!this.player.isAlive || this.currentDirection === "stop") return;
-      
+      if (!this.player.isAlive || this.currentDirection === "stop") {
+        if (!this.player.isAlive) {
+          this.startNewGame();
+        }
+        return;
+      }
+
       this.player.head.row += deltaY;
       this.player.head.col += deltaX;
 
@@ -174,7 +181,7 @@ export class PlayGameComponent implements OnInit {
 
       this.webSocketService.sendMessageToMovePlayer(this.player.playerId, row, col);
 
-      this.moveTimeout = setTimeout(moveHead, 400);
+      this.moveTimeout = setTimeout(moveHead, 500);
     };
 
     moveHead();
@@ -303,5 +310,9 @@ export class PlayGameComponent implements OnInit {
 
   orderByGainedAreaDesc(players: Player[]): Player[] {
     return players.sort((a, b) => b.gainedArea - a.gainedArea);
+  }
+
+  startNewGame(){
+    this.router.navigate(['Ecipixels']);
   }
 }
