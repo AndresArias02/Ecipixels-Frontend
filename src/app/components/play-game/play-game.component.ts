@@ -177,7 +177,7 @@ export class PlayGameComponent implements OnInit {
       const newCol = this.player.head.col + deltaX;
   
       if (newRow === lastSentPosition.row && newCol === lastSentPosition.col) {
-        setTimeout(moveHead, 400);
+        setTimeout(moveHead, 800);
         return;
       }
   
