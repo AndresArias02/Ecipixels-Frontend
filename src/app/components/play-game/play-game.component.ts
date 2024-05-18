@@ -243,7 +243,7 @@ export class PlayGameComponent implements OnInit {
         this.ctx.fillRect(x * 20, y * 20, 20, 20);
   
         const playerWithHead = this.gameState.players.find(player => player.head.row === y && player.head.col === x);
-        if (playerWithHead && playerWithHead.isAlive) {
+        if (playerWithHead?.isAlive) {
             let headColor = this.getPlayerColor(playerWithHead.color);
             this.ctx.fillStyle = headColor;
             this.ctx.beginPath();
